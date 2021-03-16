@@ -1,0 +1,43 @@
+:root {
+    --main-color: #2965d4;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#mainHeader {
+    background-color: var(--main-color);
+    height: 80px;
+    padding-left: 25px;
+    padding-right: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#mainContent {
+    width: 85vw;
+    margin: 0 auto;
+}
+
+#dataView {
+    width: 100%;
+    min-height: 75vh;
+    box-shadow: 7px 7px 14px 5px grey;
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: #eeeeee;
+}
+
+#dataView table {
+    width: 100%;
+    padding: 5px;
+}
+
+#dataView thead {
+    font-weight: 500;
+}

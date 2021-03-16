@@ -1,15 +1,11 @@
 <?php
-    /* @var array 
-    Variable Constante permettant d'accueillir les données nécessaires à la base de données
-    */
-    const DB_CREDIENTIAL = [
-        'databaseName' => 'immo_manager',
-        'adressIP' => 'localhost',
-        'user' => 'root',
-        'pass' => '',
-        'interventionsTable' => 'im_interventions',
-    ];
 
+    /** Fonction permettant de prevenir des données saisies par un utilisateur récuperer dans une page web
+     * @param mixed $data
+     * Argument prennant une donnée à traiter
+     * @return $data
+     * Retourne une donnée de n'importe quelle type
+     */
     function dataProcessing (mixed $data) {
         // Prévient les failles XSS
         $data = htmlentities($data);
@@ -50,23 +46,23 @@
     /** Fonction de création d'une intervention dans la base de données permettant l'insertion dans la table des interventions
      * @param PDO $db
      * Argument de base de données connectée nécessaire
-     * @param array $infosHTML
+     * @param array $data
      * Argument de type tableau nécessaire ayant pour jeu de données :
      * Un nom : ayant pour clé 'name'
      * Une date : ayant pour clé 'date', il faudra potentiellement convertir la date autrement dit la formater !!!
      * Un étage : ayant pour clé 'floor'
      */
-    function createIntervention(PDO $db, array $infosHTML) {
+    function createIntervention(PDO $db, array $data) {
+        $tableName = DB_CREDIENTIAL['interventionsTable'];
+
         try {
-            $tableName = DB_CREDIENTIAL['interventionsTable'];
-            
             $db->beginTransaction();
 
             $query = $db->prepare("INSERT INTO $tableName (`name`,`date`,`floor`) VALUES (:nameItv, :dateItv, :floorItv)");
             
-            $query->bindParam(':nameItv', $infosHTML['name'], PDO::PARAM_STR);
-            $query->bindParam(':dateItv', $infosHTML['date']);
-            $query->bindParam(':floorItv', $infosHTML['floor']);
+            $query->bindParam(':nameItv', $data['name'], PDO::PARAM_STR);
+            $query->bindParam(':dateItv', $data['date']);
+            $query->bindParam(':floorItv', $data['floor']);
 
             $query->execute();
             
@@ -83,8 +79,9 @@
      * Argument de fonction nécessaire à l'execution de la réquete SQL
      */
     function readInterventions (PDO $db) {
+        $tableName = DB_CREDIENTIAL['interventionsTable'];
+
         try {
-            $tableName = DB_CREDIENTIAL['interventionsTable'];
             $db->beginTransaction();
 
             $query = $db->prepare("SELECT * FROM $tableName");
@@ -97,24 +94,39 @@
             $query = null;
 
             return $result;
+
         } catch (Exception $e) {
             echo 'Erreur: ' . $e->getMessage();
         }
     }
 
-    // Code non terminée
+    /** Fonction de modification d'une intervention dans la base de données
+     * @param PDO $db
+     * Argument de connexion de la base de données
+     * @param array $data
+     * Argument de type tableau permettant de récuperer les données modifiées
+     */
     function modifyIntervention (PDO $db, array $data) {
         try {
+            $id = dataProcessing((int)$data['id']);
+            $name = dataProcessing($data['name']);
+            $date = dataProcessing($data['date']);
+            $floor = dataProcessing($data['floor']);
+
             $tableName = DB_CREDIENTIAL['interventionsTable'];
+
             $db->beginTransaction();
 
-            dataProcessing($data);
+            $query = $db->prepare("UPDATE $tableName SET `id` = :idItv, `name` = :nameItv, `date`= :dateItv, `floor`= :floorItv WHERE id = 6");
+            
+            $query->bindParam(':idItv', $id);
+            $query->bindParam(':nameItv', $name);
+            $query->bindParam(':dateItv', $date);
+            $query->bindParam(':floorItv', $floor);
 
-            $query = $db->prepare("UPDATE $tableName 
-            SET `name` = ,
-            `date`= ,
-            `floor`=  
-            WHERE id = ");
+            $query->execute();
+
+            $db->commit();
 
         } catch (Exception $e) {
             echo 'Erreur: ' . $e->getMessage();
@@ -122,6 +134,28 @@
         }
     }
 
-    
 
-?>
+    /** Fonction de suppression d'une intervention
+     * @param PDO $db
+     * Argument de connexion à la base de données
+     * @param $data
+     */
+    function deleteIntervention(PDO $db, $data) {
+        $tableName = DB_CREDIENTIAL['interventionsTable'];
+
+        try {
+            $db->beginTransaction();
+
+            $query = $db->prepare("DELETE FROM $tableName WHERE id = :idItv");
+            
+            $query->bindParam(':idItv', $data);
+
+            $query->execute();
+
+            $db->commit();
+
+        } catch (Exception $e) {
+            echo 'Erreur: ' . $e->getMessage();
+            $db->rollBack();
+        }
+    }

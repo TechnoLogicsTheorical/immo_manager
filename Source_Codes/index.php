@@ -1,23 +1,54 @@
-<?php
+<?php 
+
+    require_once 'parts/conf.php';
     require_once 'inc/basics_functions.php';
     require_once 'inc/databases_functions.php';
 
+    $titleWebPage = 'Accueil';
+    require_once 'parts/header.php';
+    
     $db = connectDB(DB_CREDIENTIAL);
-    
-    // echo $db->getAttribute(PDO::ATTR_CONNECTION_STATUS);
-
-    //Faked data get in HTML FORM
-    $infosHTML = [
-        'name' => 'Remplacement Ampoule',
-        'date' => '2011-02-12',
-        'floor' => 1,
-    ];
-
-    // createIntervention($db, $infosHTML);
-    
     $dataInterventions = readInterventions($db);
 
-    debugHTML($dataInterventions);
-
-    disconnectDB($db);
 ?>
+
+    <header id='mainHeader'>
+        <div class="logo">
+            <h1>Immo Manager</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="#">Ajouter</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id='mainContent'>
+        <h2>Interventions existantes:</h2>
+        <section id="dataView">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Identifiant</td>
+                        <td>Intitulé</td>
+                        <td>Date</td>
+                        <td>Etage</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($dataInterventions as $data): ?>
+                        <tr>
+                            <td><?= $data['id'] ?></td>
+                            <td><input type="text" value='<?= $data['name'] ?>'></td>
+                            <td><?= $data['date'] ?></td>
+                            <td><?= $data['floor'] ?></td>
+                            <td><a href="parts/edit.php">Editer</a><a href="parts/delete.php">Supprimer</a><a href="parts/view.php">Détails</a></td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+<?php require_once 'parts/footer.php'; ?>
