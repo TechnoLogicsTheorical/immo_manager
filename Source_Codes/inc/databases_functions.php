@@ -100,6 +100,52 @@
         }
     }
 
+    function readIntervention (PDO $db, int $id) {
+        $tableName = DB_CREDIENTIAL['interventionsTable'];
+
+        try {
+            $db->beginTransaction();
+
+            $query = $db->prepare("SELECT * FROM $tableName WHERE id = :idItv");
+            
+            $query->bindParam(':idItv', $id);
+
+            $query->execute();
+
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            
+            $db->commit();
+            
+            $query = null;
+
+            return $result;
+
+        } catch (Exception $e) {
+            echo 'Erreur: ' . $e->getMessage();
+        }
+    }
+
+    function readAllNamesExist(PDO $db) {
+        $tableName = DB_CREDIENTIAL['interventionsTable'];
+        
+        try {
+            $db->beginTransaction();
+
+            $query = $db->prepare("SELECT DISTINCT `name` FROM $tableName");
+            $query->execute();
+
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            $query = null;
+
+            $db->commit();
+
+            return $result;
+
+        } catch (Exception $e) {
+            echo 'Erreur: ' . $e->getMessage();
+        }
+    }
+
     /** Fonction de modification d'une intervention dans la base de données
      * @param PDO $db
      * Argument de connexion de la base de données

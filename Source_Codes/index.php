@@ -12,18 +12,6 @@
 
 ?>
 
-    <header id='mainHeader'>
-        <div class="logo">
-            <h1>Immo Manager</h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="#">Ajouter</a></li>
-            </ul>
-        </nav>
-    </header>
-
     <main id='mainContent'>
         <h2>Interventions existantes:</h2>
         <section id="dataView">
@@ -40,10 +28,10 @@
                     <?php foreach ($dataInterventions as $data): ?>
                         <tr>
                             <td><?= $data['id'] ?></td>
-                            <td><input type="text" value='<?= $data['name'] ?>'></td>
+                            <td><?= $data['name'] ?></td>
                             <td><?= $data['date'] ?></td>
                             <td><?= $data['floor'] ?></td>
-                            <td><a href="parts/edit.php">Editer</a><a href="parts/delete.php">Supprimer</a><a href="parts/view.php">Détails</a></td>
+                            <td><a href="parts/edit.php?id=<?= $data['id']?>">Editer</a><a href="parts/delete.php?id=<?= $data['id']?>">Supprimer</a><a href="parts/view.php" ?id=<?= $data['id']?>>Détails</a></td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>

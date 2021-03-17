@@ -9,3 +9,15 @@
         <link rel="stylesheet" href="assets/css/main_style.css">
     </head>
     <body>
+
+        <header id='mainHeader'>
+            <div class="logo">
+                <h1>Immo Manager</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="#">Ajouter</a></li>
+                </ul>
+            </nav>
+        </header>
