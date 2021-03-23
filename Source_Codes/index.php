@@ -44,11 +44,7 @@
                             <td><input type="text" value='<?= $data['name'] ?>'></td>
                             <td><?= $data['date'] ?></td>
                             <td><?= $data['floor'] ?></td>
-<<<<<<< Updated upstream
-                            <td><a href="parts/edit.php">Editer</a><a href="parts/delete.php">Supprimer</a><a href="parts/view.php">Détails</a></td>
-=======
                             <td><a href="parts/edit.php?id=<?= $data['id']?>">Editer</a><a href="parts/delete.php?id=<?= $data['id']?>">Supprimer</a><a href="parts/view.php?id=<?= $data['id']?>">Détails</a></td>
->>>>>>> Stashed changes
                         </tr>
                     <?php endforeach ?>
                 </tbody>

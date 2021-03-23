@@ -100,8 +100,6 @@
         }
     }
 
-<<<<<<< Updated upstream
-=======
     /** Fonction de lecture d'une intervention seule par rapport à un identifiant
      * @param PDO $db
      * Argument de connexion à la base de données
@@ -182,7 +180,6 @@
         }
     }
 
->>>>>>> Stashed changes
     /** Fonction de modification d'une intervention dans la base de données
      * @param PDO $db
      * Argument de connexion de la base de données

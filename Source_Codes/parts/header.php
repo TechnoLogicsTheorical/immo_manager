@@ -15,9 +15,6 @@
 
         <link rel="stylesheet" href="<?= $_SERVER['DOCUMENT_ROOT'] ?>/assets/css/main_style.css">
     </head>
-<<<<<<< Updated upstream
-    <body>
-=======
     <body>
 
         <header id='mainHeader'>
@@ -31,4 +28,3 @@
                 </ul>
             </nav>
         </header>
->>>>>>> Stashed changes
