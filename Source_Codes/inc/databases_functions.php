@@ -100,13 +100,96 @@
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    /** Fonction de lecture d'une intervention seule par rapport à un identifiant
+     * @param PDO $db
+     * Argument de connexion à la base de données
+     * @param int $id
+     * Argument permettant à la requete de récuperer selon l'identifiant d'une intervention 
+     */
+    function readIntervention (PDO $db, int $id) {
+        $tableName = DB_CREDIENTIAL['interventionsTable'];
+
+        try {
+            $db->beginTransaction();
+
+            $query = $db->prepare("SELECT * FROM $tableName WHERE id = :idItv");
+            
+            $query->bindParam(':idItv', $id);
+
+            $query->execute();
+
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            
+            $db->commit();
+            
+            $query = null;
+
+            return $result;
+
+        } catch (Exception $e) {
+            echo 'Erreur: ' . $e->getMessage();
+        }
+    }
+    /** Fonction de lecture de base de donnée permettant de récuperer les differents noms des interventions
+     * @param PDO $db
+     * Argument de connexion à la base de données
+     */
+    function readAllNamesExist(PDO $db) {
+        $tableName = DB_CREDIENTIAL['interventionsTable'];
+        
+        try {
+            $db->beginTransaction();
+
+            $query = $db->prepare("SELECT DISTINCT `name` FROM $tableName");
+            $query->execute();
+
+            $result = $query->fetchAll(PDO::FETCH_COLUMN,0);
+            $query = null;
+
+            $db->commit();
+
+            return $result;
+
+        } catch (Exception $e) {
+            echo 'Erreur: ' . $e->getMessage();
+        }
+    }
+
+    /** Fonction permettant de vérifier si un identifiant correspond à une donnée
+     * @param PDO $db
+     * Argument de connexion à la base de données
+     */
+    function checkIfIdExist(PDO $db, int $id) {
+        $tableName = DB_CREDIENTIAL['interventionsTable'];
+
+        try {
+            $db->beginTransaction();
+
+            $query = $db->prepare("SELECT * FROM $tableName WHERE id = $id");
+            $query->execute();
+
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            $query = null;
+
+            $db->commit();
+
+            return $result;
+
+        } catch (Exception $e) {
+            echo 'Erreur: ' . $e->getMessage();
+        }
+    }
+
+>>>>>>> Stashed changes
     /** Fonction de modification d'une intervention dans la base de données
      * @param PDO $db
      * Argument de connexion de la base de données
      * @param array $data
      * Argument de type tableau permettant de récuperer les données modifiées
      */
-    function modifyIntervention (PDO $db, array $data) {
+    function modifyIntervention (PDO $db, array $data, int $actualID) {
         try {
             $id = dataProcessing((int)$data['id']);
             $name = dataProcessing($data['name']);
@@ -117,7 +200,7 @@
 
             $db->beginTransaction();
 
-            $query = $db->prepare("UPDATE $tableName SET `id` = :idItv, `name` = :nameItv, `date`= :dateItv, `floor`= :floorItv WHERE id = 6");
+            $query = $db->prepare("UPDATE $tableName SET `id` = :idItv, `name` = :nameItv, `date`= :dateItv, `floor`= :floorItv WHERE id = $actualID");
             
             $query->bindParam(':idItv', $id);
             $query->bindParam(':nameItv', $name);
